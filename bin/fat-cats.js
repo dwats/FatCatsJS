@@ -1,11 +1,10 @@
 'use strict';
-var dash_sniffer = require('../lib/dash-arp-sniffer.js');
-
 var sheetkey = process.env.SHEETKEY;
 var dashmac = process.env.DASHMAC;
 var googauth = require('../fat-cats-558f85c4f2d6.json');
+var dashwatch = require('../lib/dash-arp-sniffer.js');
 
-var dash_sniffer = new dash_sniffer({
+var dashwatch = new dashwatch({
   sheetkey: sheetkey,
   googauth: googauth,
   dashmac: dashmac
