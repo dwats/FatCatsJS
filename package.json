@@ -1,0 +1,15 @@
+{
+  "name": "fat_cats",
+  "version": "0.0.1",
+  "description": "Track feeding habits of our cat's authority figures.",
+  "main": "index.js",
+  "dependencies": {
+    "node-dash-button": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
