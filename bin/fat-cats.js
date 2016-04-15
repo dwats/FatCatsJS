@@ -1,14 +1,15 @@
+/* jslint node: true */
+/* jshint esversion: 6 */
 'use strict';
-var DashWatch = require('../lib/dash-arp-listener.js');
-var sheetkey = process.env.SHEETKEY;
+var DashWatch = require('../lib/dashListener.class.js');
+var url = process.env.DBURL;
+var collection = process.env.DBCOL;
 var dashmac = process.env.DASHMAC;
-var googauth = require('../fat-cats-558f85c4f2d6.json');
 
 var fatcats = new DashWatch({
-  sheetkey: sheetkey,
-  googauth: googauth,
-  dashmac: dashmac
+  dashmac: dashmac,
+  url:url,
+  collection: collection
 });
 
-fatcats.tokencheck();
 fatcats.run();
