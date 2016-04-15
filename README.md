@@ -1,5 +1,14 @@
-# fat-cats
+# FatCatsJS
 ## Introduction
-Using an Amazon Dash button I'd like to track the feeding of my cats: Fudge and Rygel. I'm incorporating [google-spreadsheet](https://github.com/theoephraim/node-google-spreadsheet) and [node-dash-button](https://github.com/hortinstein/node-dash-button).
-## Why
-I'd like to monitor how many times a day and what time of day my cats are fed.
+Tracking my feline companions' I/O is important to me. With the Amazon Dash Button it's never been easier. With the help of `node-dash-button`, MongoDB, ExpressJS, AngularJS and NodeJS I finally have a simple to use system to track their day to day lives.
+
+## Amazon Dash Buttons
+At $5 the Dash Button gives the end-user a cheap and easy to setup wifi button.
+TODO: Expand
+
+## Dependencies
+TODO: Expand 
+
+## Configuration
+TODO: Expand
+
