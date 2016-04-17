@@ -4,7 +4,8 @@
   "description": "Track feeding habits of our cat's authority figures.",
   "main": "index.js",
   "dependencies": {
-    "node-dash-button": "^0.3.0"
+    "node-dash-button": "^0.3.0",
+    "express" : "latest"
   },
   "devDependencies": {},
   "scripts": {
