@@ -31,9 +31,9 @@
           </div>
           <div class="col-xs-6">
             <div class="form-group form-inline pull-right">
-              <button class="btn btn-default " ng-click="quantity = 5">5</button>
-              <button class="btn btn-default "  ng-click="quantity = 10">10</button>
-              <button class="btn btn-default "  ng-click="quantity = 20">20</button>
+              <button class="btn btn-default" ng-click="quantity = 5">5</button>
+              <button class="btn btn-default"  ng-click="quantity = 10">10</button>
+              <button class="btn btn-default"  ng-click="quantity = 20">20</button>
               <input type="number" ng-model="quantity" class="form-control" id="quantity-input" placeholder="5">
             </div>
           </div>
@@ -55,6 +55,9 @@
               </td>
               <td ng-repeat="catfood in catfoods | filter:{_id : feeding.food}">
                 {{ feeding.amount + " " + catfood.measurement }}
+              </td>
+              <td>
+                <button class="btn btn-default" ng-click="deleteFeeding(feeding._id)">X</button>
               </td>
             </tr>
           </table>
