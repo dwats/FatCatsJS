@@ -16,13 +16,13 @@
 
   <!-- SPELLS -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script><!-- load angular -->
   <script src="js/core.js"></script>
 </head>
-<body ng-controller="mainController">
+<body ng-controller="Controller">
     <div class="container">
       <div class="jumbotron text-center">
-        <h1>Last fed <span class="label label-info">{{ feedings[0].datetime | elapsed }}</span></h1>
+        <h1>Last fed <span class="label label-info"><my-elapsed></my-elapsed></span></h1>
         <h3>Feeding Counter <span class="label label-info">{{ feedings.length }}</span></h3>
       </div>
       <div class="row">
