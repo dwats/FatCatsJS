@@ -2,10 +2,20 @@
 var fatCatsFeeding = angular.module('fatCatsFeeding', []);
 
 fatCatsFeeding.controller('Controller', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
-  $scope.formData = {};
   $scope.quantity = 5;
   $scope.feedDate = '';
-  $scope.amounts = [{"id": "1/2"}, {"id":"1/3"}, {"id":"1"}];
+  $scope.amounts = [{"id":"1/6"}, {"id": "1/4"}, {"id":"1/3"}, {"id":"1"}];
+  $scope.modalSelection = {};
+  $scope.forms = {};
+  $scope.newFeeding = {
+    datetime : getDatetime(),
+    food : '5726b06124bf08692832fefd',
+    amount : '1/4'
+  };
+  $scope.showUndo = false; // Hide undo warning
+  var deferId; //interval id
+  var prisFeeding = angular.copy($scope.newFeeding);
+
   $scope.refresh = function() {
     /**
      * Set $scope.feedings to feedings API get results.
@@ -35,10 +45,11 @@ fatCatsFeeding.controller('Controller', ['$scope', '$http', '$interval', functio
    * POST form results to /api/feedings
    */
   $scope.createFeeding = function() {
-    $http.post('/api/feedings', $scope.formData)
+    $scope.newFeeding.datetime = setToGMT($scope.newFeeding.datetime);
+    $http.post('/api/feedings', $scope.newFeeding)
       .success(function(data){
-        $scope.formData = {};
-        $scope.feedings = data;
+        $scope.newFeeding = angular.copy(prisFeeding);
+        $scope.refresh();
       })
       .error(function(data){
         console.log('ERR: '+data);
@@ -59,8 +70,6 @@ fatCatsFeeding.controller('Controller', ['$scope', '$http', '$interval', functio
   /**
    * Remove with undo
    */
-   var deferId; //interval id
-   $scope.showUndo = false; // Hide undo warning
    $scope.removeFeeding = function(id, date) {
      $scope.feedDate = new Date(date);
      $scope.showUndo = true; // Show undo warning
@@ -87,9 +96,6 @@ fatCatsFeeding.controller('Controller', ['$scope', '$http', '$interval', functio
   * PUT by ID
   */
   $scope.update = function(feeding, food, foodAmount) {
-    console.log(feeding);
-    console.log(food);
-    console.log(foodAmount);
     $http.put('/api/feedings/'+feeding, {food: food, amount: foodAmount})
       .success(function(data) {
         $scope.refresh();
@@ -99,6 +105,17 @@ fatCatsFeeding.controller('Controller', ['$scope', '$http', '$interval', functio
       });
   };
 
+  $scope.resetModalForm = function() {
+    $scope.newFeeding = angular.copy(prisFeeding);
+    $scope.forms.modalFeedingForm.$setPristine();
+  };
+
+  $scope.toModalSelection = function(obj, prop) {
+      var c = _.find($scope[obj], function(thisObj) {
+          return thisObj._id === $scope.newFeeding.food;
+      });
+      $scope.modalSelection[obj] = { [prop] : c[prop] };
+  };
 }]);
 
 
@@ -107,7 +124,9 @@ fatCatsFeeding.directive('myElapsed', ['$interval', function($interval) {
     var timeoutId;
 
     function updateTime() {
-      element.text(getElapsed(scope.feedings[0].datetime));
+      if (scope.feedings) {
+        element.text(getElapsed(scope.feedings[0].datetime));
+      }
     }
 
     scope.$watch(attr.myCurrentTime, function(value) {
@@ -154,4 +173,18 @@ function getElapsed(date){
     } else {
         return "a few seconds ago";
     }
+}
+
+function getDatetime() {
+  var nowDatetime = new Date();
+  nowDatetime = new Date(nowDatetime.setSeconds(0,0));
+  var tzOffset = nowDatetime.getTimezoneOffset() * 60 * 1000;
+  var localDatetime = new Date(nowDatetime.getTime() - tzOffset);
+  return localDatetime;
+}
+
+function setToGMT(datetime) {
+  var tzOffset = datetime.getTimezoneOffset() * 60 * 1000;
+  var gmtDatetime = new Date(datetime.getTime() + tzOffset);
+  return gmtDatetime;
 }
