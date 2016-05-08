@@ -1,0 +1,32 @@
+<table class="table table-striped table-bordered table-hover">
+  <tr>
+    <th>Date Time</th>
+    <th>Food Type</th>
+    <th>Amount Fed</th>
+  </tr>
+  <tr ng-repeat="feeding in feedings | limitTo:quantity">
+    <td>
+      {{ feeding.datetime | date : "MMMM d, y '@' HH:mm 'CDT('Z')'" : 'CDT'}}
+    </td>
+    <td>
+      <select
+        ng-init="feedFood = feeding.food"
+        ng-model="feedFood"
+        ng-options="catfood._id as catfood.brand+' '+catfood.name for catfood in catfoods | orderBy: ['brand', 'name']"
+        ng-change="update(feeding._id, feedFood, feeding.amount)">
+      </select>
+    </td>
+    <td ng-repeat="catfood in catfoods | filter: {'_id':feedFood} : true">
+      <select
+        ng-init="feedAmount = feeding.amount" getDatePickValue
+        ng-model="feedAmount"
+        ng-options="amount.id as amount.id for amount in amounts"
+        ng-change="update(feeding._id, feedFood, feedAmount)">
+      </select>
+      {{ catfood.measurement }}
+    </td>
+    <td class="borderless">
+      <button class="btn btn-danger" ng-click="removeFeeding(feeding._id, feeding.datetime)">X</button>
+    </td>
+  </tr>
+</table>
