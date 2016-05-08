@@ -1,0 +1,41 @@
+<div id="modal-feeding" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 id="modal-feeding-title" class="modal-title">New Feeding Time</h4>
+      </div>
+
+      <div class="modal-body">
+        <form name="forms.modalFeedingForm">
+          <label for="datetime-fed">Date and Time</label>
+          <div class="input-group">
+            <input id="datetime-fed" class="form-control" type="datetime-local" ng-model="newFeeding.datetime"></input>
+          </div>
+          <label for="catfood-fed">Catfood</label>
+          <div class="input-group">
+            <select id="catfood-fed"
+            class="form-control"
+            ng-change="toModalSelection('catfoods','measurement')"
+            ng-model="newFeeding.food"
+            ng-options="catfood._id as catfood.brand + ' ' + catfood.name for catfood in catfoods | orderBy: ['brand', 'name']"></select>
+          </div>
+          <label for="amount-fed">Amount</label>
+          <div class="input-group">
+            <select id="amount-fed"
+            class="form-control"
+            ng-model="newFeeding.amount"
+            ng-options="amount.id as amount.id + ' ' + modalSelection.catfoods.measurement for amount in amounts"></select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" ng-click="createFeeding()">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="resetModalForm()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
