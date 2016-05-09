@@ -7,16 +7,13 @@
 
   <!-- SCROLLS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <style>
-      html                    { overflow-y:scroll; }
-      body                    { padding-top:50px; }
-      #feeding-list           { margin-bottom:30px; }
-      #quantity-input { width: 90px; }
-  </style>
+  <link rel="stylesheet" href="css/core.css">
+  <link rel="stylesheet" href="css/animate.css">
 
   <!-- SPELLS -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> <!-- load jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script><!-- load angular -->
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
   <script src="js/core.js"></script>
@@ -28,16 +25,9 @@
         <h3>Feeding Counter <span class="label label-info">{{ feedings.length }}</span></h3>
       </div>
       <!-- Undo Alert -->
-      <div class="alert alert-danger" role="alert" ng-show="showUndo">
-        <div class="row">
-          <div class="col-sm-8">
-            <strong>{{ feedDate | date : "MMMM d, y '@' HH:mm 'CDT('Z')'" : 'CDT' }} Feeding record has been removed!</strong>
-          </div>
-          <div class="col-sm-4">
-            <button class="btn btn-link pull-right" ng-click="undoRemove()">Click to undo</button>
-          </div>
-        </div>
-      </div>
+      <div class="animate-container" ng-include="'html/delete-alert-template.html'"></div>
+      <!-- Modal Popup -->
+      <div ng-include="'html/modal-feeding-template.html'"></div>
       <!-- Modal Open Button -->
       <div class="row">
         <div class="col-xs-12 col-xs-offset-0">
@@ -45,7 +35,6 @@
           data-target="#modal-feeding">Add New Feeding</button>
         </div>
       </div>
-      <div ng-include="'html/modal-feeding-template.html'"></div>
       <!-- Table Control Start -->
       <div class="row">
           <div class="col-xs-6">
