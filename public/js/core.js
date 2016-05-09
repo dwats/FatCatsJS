@@ -1,155 +1,170 @@
 // public/core.js
-var fatCatsFeeding = angular.module('fatCatsFeeding', []);
+var fatCatsFeeding = angular.module('fatCatsFeeding', ['ngAnimate']);
 
 fatCatsFeeding.controller('Controller', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
-  $scope.quantity = 5;
-  $scope.feedDate = '';
-  $scope.amounts = [{"id":"1/6"}, {"id": "1/4"}, {"id":"1/3"}, {"id":"1"}];
-  $scope.modalSelection = {};
-  $scope.forms = {};
-  $scope.newFeeding = {
-    datetime : getDatetime(),
-    food : '5726b06124bf08692832fefd',
-    amount : '1/4'
-  };
-  $scope.showUndo = false; // Hide undo warning
-  var deferId; //interval id
-  var prisFeeding = angular.copy($scope.newFeeding);
+    $scope.feedings = [];
+    $scope.quantity = 5;
+    $scope.feedDate = '';
+    $scope.amounts = [{
+        "id": "1/6"
+    }, {
+        "id": "1/4"
+    }, {
+        "id": "1/3"
+    }, {
+        "id": "1"
+    }];
+    $scope.modalSelection = {};
+    $scope.forms = {};
+    $scope.newFeeding = {
+        datetime: getDatetime(),
+        food: '5726b06124bf08692832fefd',
+        amount: '1/4'
+    };
+    $scope.showUndo = false; // Hide undo warning
+    var deferId; //interval id
+    var prisFeeding = angular.copy($scope.newFeeding);
 
-  $scope.refresh = function() {
+    $scope.refresh = function() {
+        /**
+         * Set $scope.feedings to feedings API get results.
+         */
+        $http.get('/api/feedings')
+            .success(function(data) {
+                $scope.feedings = data;
+            })
+            .error(function(data) {
+                console.log('ERR: ' + data);
+            });
+
+        /**
+         * Set $scope.catfoods to catfoods API get results.
+         */
+        $http.get('/api/catfoods')
+            .success(function(data) {
+                $scope.catfoods = data;
+            })
+            .error(function(data) {
+                console.log('ERR: ' + data);
+            });
+    };
+    $scope.refresh();
+
     /**
-     * Set $scope.feedings to feedings API get results.
+     * POST form results to /api/feedings
      */
-    $http.get('/api/feedings')
-      .success(function(data) {
-        $scope.feedings = data;
-      })
-      .error(function(data) {
-        console.log('ERR: '+data);
-      });
+    $scope.createFeeding = function() {
+        //$scope.newFeeding.datetime = setToGMT($scope.newFeeding.datetime);
+        $http.post('/api/feedings', $scope.newFeeding)
+            .success(function(data) {
+                console.log(data);
+                $scope.newFeeding = angular.copy(prisFeeding);
+                $scope.feedings.unshift(data);
+            })
+            .error(function(data) {
+                console.log('ERR: ' + data);
+            });
+    };
+    /**
+     * DELETE by ID
+     */
+    $scope.deleteFeeding = function(id) {
+        $http.delete('/api/feedings/' + id)
+            .success(function(data) {
+                console.log("Delete Success");
+            })
+            .error(function(data) {
+                console.log('ERR: ' + data);
+            });
+    };
+    /**
+     * Remove with undo
+     */
+    $scope.removeFeeding = function(id, date) {
+        $scope.feedDate = new Date(date);
+        $scope.showUndo = true; // Show undo warning
+        $scope.feedings = _.filter($scope.feedings, function(feeding) {
+            return feeding._id !== id;
+        });
+        deferId = $interval(function() {
+            $scope.showUndo = false;
+            $scope.deleteFeeding(id);
+            $interval.cancel(deferId);
+        }, 10000);
+    };
 
     /**
-     * Set $scope.catfoods to catfoods API get results.
+     * Undo Remove
      */
-    $http.get('/api/catfoods')
-      .success(function(data) {
-        $scope.catfoods = data;
-      })
-      .error(function(data) {
-        console.log('ERR: '+data);
-      });
-  };
-  $scope.refresh();
+    $scope.undoRemove = function() {
+        $interval.cancel(deferId);
+        $scope.showUndo = false;
+        $scope.refresh();
+    };
 
-  /**
-   * POST form results to /api/feedings
-   */
-  $scope.createFeeding = function() {
-    $scope.newFeeding.datetime = setToGMT($scope.newFeeding.datetime);
-    $http.post('/api/feedings', $scope.newFeeding)
-      .success(function(data){
+    /**
+     * PUT by ID
+     */
+    $scope.update = function(feeding, food, foodAmount) {
+        $http.put('/api/feedings/' + feeding, {
+                food: food,
+                amount: foodAmount
+            })
+            .success(function(data) {
+                $scope.refresh();
+            })
+            .error(function(data) {
+                console.log('ERR: ' + data);
+            });
+    };
+
+    $scope.resetModalForm = function() {
         $scope.newFeeding = angular.copy(prisFeeding);
-        $scope.refresh();
-      })
-      .error(function(data){
-        console.log('ERR: '+data);
-      });
-  };
-  /**
-   * DELETE by ID
-   */
-  $scope.deleteFeeding = function(id) {
-    $http.delete('/api/feedings/'+id)
-      .success(function(data) {
-        $scope.refresh();
-      })
-      .error(function(data) {
-          console.log('ERR: '+data);
-      });
-  };
-  /**
-   * Remove with undo
-   */
-   $scope.removeFeeding = function(id, date) {
-     $scope.feedDate = new Date(date);
-     $scope.showUndo = true; // Show undo warning
-     $scope.feedings = _.filter($scope.feedings, function(feeding) {
-       return feeding._id !== id;
-     });
-     deferId = $interval(function () {
-          $scope.showUndo = false;
-          $scope.deleteFeeding(id);
-          $interval.cancel(deferId);
-      }, 15000);
-   };
+        $scope.forms.modalFeedingForm.$setPristine();
+    };
 
- /**
-  * Undo Remove
-  */
-  $scope.undoRemove = function() {
-      $interval.cancel(deferId);
-      $scope.showUndo = false;
-      $scope.refresh();
-  };
-
- /**
-  * PUT by ID
-  */
-  $scope.update = function(feeding, food, foodAmount) {
-    $http.put('/api/feedings/'+feeding, {food: food, amount: foodAmount})
-      .success(function(data) {
-        $scope.refresh();
-      })
-      .error(function(data) {
-          console.log('ERR: '+data);
-      });
-  };
-
-  $scope.resetModalForm = function() {
-    $scope.newFeeding = angular.copy(prisFeeding);
-    $scope.forms.modalFeedingForm.$setPristine();
-  };
-
-  $scope.toModalSelection = function(obj, prop) {
-      var c = _.find($scope[obj], function(thisObj) {
-          return thisObj._id === $scope.newFeeding.food;
-      });
-      $scope.modalSelection[obj] = { [prop] : c[prop] };
-  };
+    $scope.toModalSelection = function(obj, prop) {
+        var c = _.find($scope[obj], function(thisObj) {
+            return thisObj._id === $scope.newFeeding.food;
+        });
+        $scope.modalSelection[obj] = {
+            [prop]: c[prop]
+        };
+    };
 }]);
 
 
 fatCatsFeeding.directive('myElapsed', ['$interval', function($interval) {
-  function link(scope, element, attr) {
-    var timeoutId;
+    function link(scope, element, attr) {
+        var timeoutId;
 
-    function updateTime() {
-      if (scope.feedings) {
-        element.text(getElapsed(scope.feedings[0].datetime));
-      }
+        function updateTime() {
+            if (scope.feedings.length) {
+                element.text(getElapsed(scope.feedings[0].datetime));
+            }
+        }
+
+        scope.$watch(attr.myCurrentTime, function(value) {
+            updateTime();
+        });
+
+        element.on('$destroy', function() {
+            $interval.cancel(timeoutId);
+        });
+
+        timeoutId = $interval(function() {
+            updateTime();
+        }, 1000);
     }
-
-    scope.$watch(attr.myCurrentTime, function(value) {
-      updateTime();
-    });
-
-    element.on('$destroy', function() {
-      $interval.cancel(timeoutId);
-    });
-
-    timeoutId = $interval(function() {
-      updateTime();
-    }, 1000);
-  }
-  return {
-    link : link
-  };
+    return {
+        link: link
+    };
 }]);
 
 /**
  * Return formatted string containing "elapsed time" since input
  */
-function getElapsed(date){
+function getElapsed(date) {
     if (!date) return;
     var time = Date.parse(date),
         timeNow = new Date().getTime(),
@@ -168,7 +183,7 @@ function getElapsed(date){
         return "an hour ago";
     } else if (minutes > 1) {
         return minutes + " minutes ago";
-    } else if (minutes == 1){
+    } else if (minutes == 1) {
         return "a minute ago";
     } else {
         return "a few seconds ago";
@@ -176,15 +191,14 @@ function getElapsed(date){
 }
 
 function getDatetime() {
-  var nowDatetime = new Date();
-  nowDatetime = new Date(nowDatetime.setSeconds(0,0));
-  var tzOffset = nowDatetime.getTimezoneOffset() * 60 * 1000;
-  var localDatetime = new Date(nowDatetime.getTime() - tzOffset);
-  return localDatetime;
+    var nowDatetime = new Date();
+    nowDatetime = new Date(nowDatetime.setSeconds(0, 0));
+    return nowDatetime;
 }
 
-function setToGMT(datetime) {
-  var tzOffset = datetime.getTimezoneOffset() * 60 * 1000;
-  var gmtDatetime = new Date(datetime.getTime() + tzOffset);
-  return gmtDatetime;
+function getLocalTimezone(datetime) {
+    var tmpDatetime = new Date(datetime);
+    var tzOffset = tmpDatetime.getTimezoneOffset() * 60 * 1000;
+    var localDatetime = new Date(tmpDatetime.getTime() - tzOffset);
+    return localDatetime;
 }
