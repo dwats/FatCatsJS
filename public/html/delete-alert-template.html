@@ -1,0 +1,10 @@
+<div class="alert alert-danger" role="alert" ng-show="showUndo">
+  <div class="row">
+    <div class="col-sm-8">
+      <strong>{{ feedDate | date : "MMMM d, y '@' HH:mm 'CDT('Z')'" : 'CDT' }} Feeding record has been removed!</strong>
+    </div>
+    <div class="col-sm-4">
+      <button class="btn btn-link pull-right" ng-click="undoRemove()">Click to undo</button>
+    </div>
+  </div>
+</div>
