@@ -1,0 +1,4 @@
+html { overflow-y:scroll; }
+body { padding-top:50px; }
+#feeding-list { margin-bottom:30px; }
+#quantity-input { width: 90px; }
