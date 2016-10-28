@@ -39,3 +39,5 @@ fat-cats-558f85c4f2d6.json
 package.json
 
 .gitignore
+.eslintrc
+.jsbeautifyrc
