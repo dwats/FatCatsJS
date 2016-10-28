@@ -4,10 +4,16 @@
   "description": "Track feeding habits of our cat's authority figures.",
   "main": "index.js",
   "dependencies": {
+    "angular": "^1.5.8",
+    "express": "^4.14.0",
+    "moment": "^2.15.2",
     "node-dash-button": "^0.3.0",
-    "express" : "latest"
+    "underscore": "^1.8.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
