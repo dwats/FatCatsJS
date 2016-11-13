@@ -1,5 +1,4 @@
 const HttpServer = require('../lib/server.class.js');
-const request = require('request');
 
 const httpServer = new HttpServer({
   url: 'mongodb://localhost:27017/cats',
