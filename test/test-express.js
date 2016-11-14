@@ -1,8 +1,8 @@
-const HttpServer = require('../lib/server.class.js');
+const httpServer = require('../lib/fcServer.js');
 
-const httpServer = new HttpServer({
+const server = httpServer({
   url: 'mongodb://localhost:27017/cats',
   path: '/eric/Documents/code/JavaScript/FatCatsJS'
 });
 
-httpServer.run();
+server.run();
