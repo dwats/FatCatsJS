@@ -1,0 +1,30 @@
+
+  <div class="data-pill" ng-repeat="reminder in reminders">
+
+    <div class="pill-jumbo {{}}">
+      <div class="jumbo-title">Feeding</div>
+      <div class="jumbo-time">{{reminder.time}}</div>
+      <div class="jumbo-subtime">Hours</div>
+    </div>
+
+    <div class="pill-content">
+      <div class="pill-content-table">
+        <div class="pill-content-table-row">
+          <div class="pill-content-table-cell cell-one">
+            #
+          </div>
+          <div class="pill-content-table-cell cell-two">
+            <input class="item-datetime" type="datetime-local">
+          </div>
+          <div class="pill-content-table-cell cell-three">
+            <button class="button-delete-item" type="button">x</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pill-content-control">
+        <button class="button-new-item" type="button">+</button>
+      </div>
+
+    </div>
+  </div>
