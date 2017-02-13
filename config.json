@@ -1,0 +1,32 @@
+{
+  "apiUrl" : "http://localhost:8080/api",
+  "httpServer" : {
+    "url": "mongodb://localhost:27017/reminders",
+    "path": "/home/eric/Documents/code/JavaScript/FatCatsJS/"
+  },
+  "dashButtons" : [{
+    "name" : "Cat Feeding",
+    "mac" : "74:75:48:8F:D9:7D",
+    "endpoint" : "/feedings",
+    "payload": {
+      "datetime": "return new Date()"
+    },
+    "warning" : "9"
+  }, {
+    "name" : "Litter Cleaning",
+    "mac" : "f0:27:2d:fc:3b:99",
+    "endpoint" : "/litters",
+    "payload" : {
+      "datetime" : "return new Date()"
+    },
+    "warning" : "48"
+  }, {
+    "name" : "Plant Watering",
+    "mac" : "00:bb:3a:23:00:17",
+    "endpoint" : "/waterings",
+    "payload" : {
+      "datetime" : "return new Date()"
+    },
+    "warning" : "96"
+  }]
+}
