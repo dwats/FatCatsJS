@@ -1,27 +1,23 @@
-const app = angular.module('reminderApp', ['ngRoute']);
-
-app
-  .controller('ReminderController', ['$scope', function ($scope) {
-    /**
-    let exampleReminderJSON = {
-      title: '',
-      endpoint: '',
-      warningNumber: 0
-    }
-    */
-    function getReminders() {
-      const arr = [];
-      for (let i = 0; i < (Math.random() * (5 - 1)) + 1; i++) {
-        arr.push({ time: Math.round((Math.random() * (24 - 0)) + 0) });
-      }
-      return arr;
-    }
-    $scope.refresh = function () {
-      console.log("boop");
-      $scope.$destroy
-      $scope.reminders = getReminders();
-    };
-
+angular.module('reminderApp', ['ngRoute', 'ngResource'])
+  .factory('Reminders', ['$http', function ($http) {
+    const obj = [];
+    obj.push($http.get('/api/feedings'));
+    obj.push($http.get('/api/litters'));
+    obj.push($http.get('/api/waterings'));
+    return Promise.all(obj).then(values => {
+      return values;
+    })
+  }])
+  .controller('ReminderController', ['$scope', 'Reminders', function ($scope, Reminders) {
+    console.log(Reminders);
+    Reminders
+      .success(function(data) {
+        $scope.reminders = data;
+      })
+      .error(function(data, status){
+        console.log(data, status);
+        $scope.todos = [];
+      });
   }])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
