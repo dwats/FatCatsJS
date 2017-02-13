@@ -1,21 +1,8 @@
-/* jslint node: true */
-/* jshint esversion: 6 */
 'use strict';
-var DashWatch = require('./lib/dashListener.class.js');
-var HttpServer = require("./lib/server.class.js");
-var url = process.env.DBURL;
-var collection = process.env.DBCOL;
-var dashmac = process.env.DASHMAC;
 
-var server = new HttpServer({
-  url:url,
-  path : __dirname
-});
-var fatcats = new DashWatch({
-  dashmac: dashmac,
-  url:url,
-  collection: collection
-});
+const config = require('./config.json');
+const httpServer = require('./lib/fcServer.js')(config.httpServer);
+const dashTrigger = require('./lib/fcDashTrigger.js')(config);
 
-fatcats.run();
-server.run();
+httpServer.run();
+dashTrigger.listen();
