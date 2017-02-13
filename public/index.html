@@ -1,68 +1,20 @@
 <!doctype html>
-<html ng-app="fatCatsFeeding">
+<html ng-app="reminderApp">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FatCats - Feline Feeding Monitor</title>
-
-  <!-- SCROLLS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <style>
-      html                    { overflow-y:scroll; }
-      body                    { padding-top:50px; }
-      #feeding-list           { margin-bottom:30px; }
-      #quantity-input { width: 90px; }
-  </style>
-
-  <!-- SPELLS -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> <!-- load jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script><!-- load angular -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <title>Wait, did I leave the oven on?</title>
+  <link rel="stylesheet" text="text/css" href="./css/core.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
   <script src="js/core.js"></script>
 </head>
-<body ng-controller="Controller">
-    <div class="container">
-      <div class="jumbotron text-center">
-        <h1>Last fed <span class="label label-info"><my-elapsed></my-elapsed></span></h1>
-        <h3>Feeding Counter <span class="label label-info">{{ feedings.length }}</span></h3>
-      </div>
-      <!-- Undo Alert -->
-      <div class="alert alert-danger" role="alert" ng-show="showUndo">
-        <div class="row">
-          <div class="col-sm-8">
-            <strong>{{ feedDate | date : "MMMM d, y '@' HH:mm 'CDT('Z')'" : 'CDT' }} Feeding record has been removed!</strong>
-          </div>
-          <div class="col-sm-4">
-            <button class="btn btn-link pull-right" ng-click="undoRemove()">Click to undo</button>
-          </div>
-        </div>
-      </div>
-      <!-- Modal Open Button -->
-      <div class="row">
-        <div class="col-xs-12 col-xs-offset-0">
-          <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
-          data-target="#modal-feeding">Add New Feeding</button>
-        </div>
-      </div>
-      <div ng-include="'html/modal-feeding-template.html'"></div>
-      <!-- Table Control Start -->
-      <div class="row">
-          <div class="col-xs-6">
-            <h4 class="pull-left">Feeding Times <br/><small>Last {{quantity}}</h4>
-          </div>
-          <div class="col-xs-6">
-            <div class="form-group form-inline pull-right">
-              <button class="btn btn-default" ng-click="quantity = 5">5</button>
-              <button class="btn btn-default"  ng-click="quantity = 10">10</button>
-              <button class="btn btn-default"  ng-click="quantity = 20">20</button>
-              <input type="number" ng-model="quantity" class="form-control" id="quantity-input" placeholder="5">
-            </div>
-          </div>
-      </div>
-      <!-- table start -->
-      <div id="feeding-list" class="row">
-        <div class="col-sm-12" ng-include="'html/table-feeding-template.html'"></div>
-      </div>
-    </div>
+<body ng-controller="ReminderController">
+  <button ng-click="refresh()">Refresh</button>
+  <div class="data-pill-container">
+    <ng-view></ng-view>
+  </div>
 </body>
+</html>
