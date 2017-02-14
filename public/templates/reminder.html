@@ -1,30 +1,25 @@
-
-  <div class="data-pill" ng-repeat="reminder in reminders">
-
-    <div class="pill-jumbo {{}}">
-      <div class="jumbo-title">Feeding</div>
-      <div class="jumbo-time">{{reminder.time}}</div>
-      <div class="jumbo-subtime">Hours</div>
-    </div>
-
-    <div class="pill-content">
-      <div class="pill-content-table">
-        <div class="pill-content-table-row">
-          <div class="pill-content-table-cell cell-one">
-            #
-          </div>
-          <div class="pill-content-table-cell cell-two">
-            <input class="item-datetime" type="datetime-local">
-          </div>
-          <div class="pill-content-table-cell cell-three">
-            <button class="button-delete-item" type="button">x</button>
-          </div>
+<div class="data-pill" ng-repeat="reminder in reminders">
+  <!-- Reminder Jumbo Frame -->
+  <div class="pill-jumbo" ng-class="{ bad: reminder.warning }">
+    <div class="jumbo-title">{{reminder.name}}</div>
+    <div class="jumbo-time">{{reminder.elapsed.time}}</div>
+    <div class="jumbo-subtime">{{reminder.elapsed.timename}}</div>
+  </div>
+  <!-- Reminder Content Frame -->
+  <div class="pill-content">
+    <div class="pill-content-table">
+      <div class="pill-content-table-row" ng-repeat="data in reminder.data|limitTo:5">
+        <div class="pill-content-table-cell cell-two">
+          <input class="item-datetime" type="datetime-local" ng-model="data">
+        </div>
+        <div class="pill-content-table-cell cell-three">
+          <button class="button-delete-item" type="button">x</button>
         </div>
       </div>
-
-      <div class="pill-content-control">
-        <button class="button-new-item" type="button">+</button>
-      </div>
-
+    </div>
+    <!-- Reminder Content Control(s) -->
+    <div class="pill-content-control">
+      <button class="button-new-item" type="button">+</button>
     </div>
   </div>
+</div>
