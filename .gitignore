@@ -41,3 +41,7 @@ package.json
 .gitignore
 .eslintrc
 .jsbeautifyrc
+karma.conf.js
+manual_tests
+bower.json
+bower_components/
